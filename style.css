@@ -91,7 +91,7 @@ h1 {
 
 /* Hidden Input */
 .hiddenInput {
-  position: absolute;
+  /* position: absolute; */
   clip: rect(0, 0, 0, 0);
 }
 
