@@ -103,7 +103,7 @@ function startGame() {
   populateUserInputPlaceholders(); //Add placeholders
 
   //Add the event listener
-  window.addEventListener("keydown", keydownEvent);
+  document.addEventListener("keydown", keydownEvent);
   inputWorkaround.focus(); //Set focus so that on mobile, keyboard can popup
 }
 
@@ -174,7 +174,7 @@ function wrongInput(character) {
  * Defines a set of operations to perfrom when game is over for a user
  */
 function gameOver() {
-  window.removeEventListener("keydown", keydownEvent);
+  document.removeEventListener("keydown", keydownEvent);
   showNotification("Game Over! Try again");
 }
 
