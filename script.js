@@ -103,8 +103,10 @@ function startGame() {
   populateUserInputPlaceholders(); //Add placeholders
 
   //Add the event listener
-  document.addEventListener("keydown", keydownEvent);
-  inputWorkaround.focus(); //Set focus so that on mobile, keyboard can popup
+  setTimeout(() => {
+    document.addEventListener("keydown", keydownEvent);
+    inputWorkaround.focus(); //Set focus so that on mobile, keyboard can popup
+  }, 1000);
 }
 
 /**
