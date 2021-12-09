@@ -199,7 +199,7 @@ function victory() {
  * @param {*} event DOM event
  */
 function keydownEvent(event) {
-  console.log("Keydown event");
+  console.log("Keydown event", event);
   if (event.key.length === 1) {
     const keyValue = event.key.toUpperCase().charCodeAt(0);
     if (keyValue >= 65 && keyValue <= 91) {
