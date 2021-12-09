@@ -103,11 +103,11 @@ function startGame() {
   populateUserInputPlaceholders(); //Add placeholders
 
   //Add the event listener
-  setTimeout(() => {
-    document.addEventListener("keydown", keydownEvent);
-    inputWorkaround.addEventListener("keydown", keydownEvent);
+  document.addEventListener("keydown", keydownEvent);
+  if (!isDesktopViewport()) {
+    inputWorkaround.classList.add("show");
     inputWorkaround.focus(); //Set focus so that on mobile, keyboard can popup
-  }, 1000);
+  }
 }
 
 /**
@@ -199,12 +199,16 @@ function victory() {
  * @param {*} event DOM event
  */
 function keydownEvent(event) {
-  console.log("Keydown event", event);
-  if (event.key.length === 1) {
-    const keyValue = event.key.toUpperCase().charCodeAt(0);
-    if (keyValue >= 65 && keyValue <= 91) {
-      userInput(event.key.toLowerCase());
-    }
+  let keyValue = event.key.toUpperCase().charCodeAt(0);
+  if (!isDesktopViewport()) {
+    keyValue = event.target.value
+      .charAt(event.target.selectionStart - 1)
+      .toUpperCase()
+      .charCodeAt(0);
+  }
+
+  if (keyValue >= 65 && keyValue <= 91) {
+    userInput(event.key.toLowerCase());
   }
 }
 
@@ -223,4 +227,12 @@ function showNotification(message) {
   setTimeout(() => {
     notification.classList.remove("show");
   }, 5000);
+}
+
+/**
+ * Checks if the current viewport is mobile.
+ * Returns true if yes, else false
+ */
+function isDesktopViewport() {
+  return window.outerWidth >= 1024;
 }
