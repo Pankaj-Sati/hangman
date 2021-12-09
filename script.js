@@ -199,7 +199,6 @@ function victory() {
  * @param {*} event DOM event
  */
 function keydownEvent(event) {
-  console.log("Keydown", event);
   let keyValue = event.key.toUpperCase().charCodeAt(0);
   if (!isDesktopViewport()) {
     keyValue = event.target.value
@@ -209,7 +208,7 @@ function keydownEvent(event) {
   }
 
   if (keyValue >= 65 && keyValue <= 91) {
-    userInput(event.key.toLowerCase());
+    userInput(String.fromCharCode(keyValue));
   }
 }
 
