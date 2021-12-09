@@ -202,7 +202,7 @@ function keydownEvent(event) {
   let keyValue = event.key.toUpperCase().charCodeAt(0);
   if (!isDesktopViewport()) {
     keyValue = event.target.value
-      .charAt(event.target.selectionStart - 1 || 1)
+      .charAt(event.target.selectionStart - 1)
       .toUpperCase()
       .charCodeAt(0);
   }
