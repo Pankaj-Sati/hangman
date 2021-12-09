@@ -105,6 +105,7 @@ function startGame() {
   //Add the event listener
   setTimeout(() => {
     document.addEventListener("keydown", keydownEvent);
+    inputWorkaround.addEventListener("keydown", keydownEvent);
     inputWorkaround.focus(); //Set focus so that on mobile, keyboard can popup
   }, 1000);
 }
@@ -198,6 +199,7 @@ function victory() {
  * @param {*} event DOM event
  */
 function keydownEvent(event) {
+  console.log("Keydown event");
   if (event.key.length === 1) {
     const keyValue = event.key.toUpperCase().charCodeAt(0);
     if (keyValue >= 65 && keyValue <= 91) {
