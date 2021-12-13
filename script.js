@@ -22,7 +22,7 @@ window.addEventListener("DOMContentLoaded", () => {
  * current word or a wrong character
  * @param {*} character Character input by User
  */
-function userInput(character) {
+function manageUserInputChar(character) {
   const charIndex = charactersGuessed.indexOf(character);
   if (charIndex === -1) {
     // Wrong character guessed
@@ -103,7 +103,7 @@ function startGame() {
   populateUserInputPlaceholders(); //Add placeholders
 
   //Add the event listener
-  document.addEventListener("keydown", keydownEvent);
+  document.addEventListener("keyup", inputEvent);
   if (!isDesktopViewport()) {
     inputWorkaround.classList.add("show");
     inputWorkaround.focus(); //Set focus so that on mobile, keyboard can popup
@@ -177,7 +177,7 @@ function wrongInput(character) {
  * Defines a set of operations to perfrom when game is over for a user
  */
 function gameOver() {
-  document.removeEventListener("keydown", keydownEvent);
+  document.removeEventListener("keyup", inputEvent);
   showNotification("Game Over! Try again");
 }
 
@@ -190,15 +190,15 @@ function victory() {
     console.error("You haven't guessed the word yet");
     return;
   }
-  window.removeEventListener("keydown", keydownEvent);
+  window.removeEventListener("keyup", inputEvent);
   showNotification("You have won the game");
 }
 
 /**
- * Keydown event call back function
+ * User input event call back function
  * @param {*} event DOM event
  */
-function keydownEvent(event) {
+function inputEvent(event) {
   let keyValue = event.key.toUpperCase().charCodeAt(0);
   if (!isDesktopViewport()) {
     keyValue = event.target.value
@@ -208,7 +208,7 @@ function keydownEvent(event) {
   }
 
   if (keyValue >= 65 && keyValue <= 91) {
-    userInput(String.fromCharCode(keyValue));
+    manageUserInputChar(String.fromCharCode(keyValue));
   }
 }
 
