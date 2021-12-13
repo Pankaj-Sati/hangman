@@ -6,6 +6,8 @@ const wrongCharactersContainer = document.getElementById(
 const hangmanSvg = document.getElementById("hangmanSvg");
 const notification = document.getElementById("notification-container");
 const inputWorkaround = document.getElementById("inputWorkaround");
+const gameModal = document.getElementById("gameModal");
+const modalMessage = gameModal.querySelector("#message");
 
 let currentWord = null;
 let charactersGuessed = null;
@@ -66,13 +68,21 @@ function addCharacter(character, isRight = false) {
 /**
  * Choose a word when game starts
  */
-function chooseWord() {
-  const randomIndex = Math.floor(Math.random() * words.length); //Generate a number
-  //between 0 & length & pick its integer part
-  if (randomIndex === words.length) {
-    return words[0]; // If index is same as length, so we will return first element
-  }
-  return words[randomIndex];
+async function chooseWord() {
+  // const randomIndex = Math.floor(Math.random() * words.length); //Generate a number
+  // //between 0 & length & pick its integer part
+  // if (randomIndex === words.length) {
+  //   return words[0]; // If index is same as length, so we will return first element
+  // }
+  // return words[randomIndex];
+  let word = null;
+
+  await fetch("https://random-word-api.herokuapp.com/word?number=1")
+    .then((res) => res.json())
+    .then((words) => {
+      word = words[0];
+    });
+  return word;
 }
 
 /**
@@ -96,10 +106,10 @@ function populateUserInputPlaceholders() {
 /**
  * Starts a new game
  */
-function startGame() {
+async function startGame() {
   resetGame(); //Reset the game
 
-  currentWord = chooseWord(); //Choose a new random word
+  currentWord = await chooseWord(); //Choose a new random word
   populateUserInputPlaceholders(); //Add placeholders
 
   //Add the event listener
@@ -117,7 +127,11 @@ function resetGame() {
   currentWord = null;
   correctCharacters.innerHTML = ""; //Empty the Characters
   wrongCharacters.innerHTML = ""; //Empty the Characters
-  wrongCharactersContainer.classList.remove("show");
+  inputWorkaround.value = ""; // Reset the input
+  wrongCharactersContainer.classList.remove("show"); //Reset wrong words
+  gameModal.classList.remove("show"); //Hide modal
+  const hangmanParts = hangmanSvg.querySelectorAll(".figure-part");
+  hangmanParts.forEach((part) => part.classList.remove("show"));
 }
 
 /**
@@ -178,7 +192,7 @@ function wrongInput(character) {
  */
 function gameOver() {
   document.removeEventListener("keyup", inputEvent);
-  showNotification("Game Over! Try again");
+  showGameModal(`Game Over! The correct word is ${currentWord}`);
 }
 
 /**
@@ -191,7 +205,7 @@ function victory() {
     return;
   }
   window.removeEventListener("keyup", inputEvent);
-  showNotification("You have won the game");
+  showGameModal("You have won the game");
 }
 
 /**
@@ -235,4 +249,13 @@ function showNotification(message) {
  */
 function isDesktopViewport() {
   return window.outerWidth >= 1024;
+}
+
+/**
+ * Displays game modal on the screen
+ * @param {*} message Message string to show
+ */
+function showGameModal(message) {
+  modalMessage.innerText = message;
+  gameModal.classList.add("show");
 }
