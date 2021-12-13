@@ -199,15 +199,15 @@ function victory() {
  * @param {*} event DOM event
  */
 function inputEvent(event) {
-  let keyValue = event.key.toUpperCase().charCodeAt(0);
+  let keyValue = event.key.toLowerCase().charCodeAt(0);
   if (!isDesktopViewport()) {
     keyValue = event.target.value
       .charAt(event.target.selectionStart - 1)
-      .toUpperCase()
+      .toLowerCase()
       .charCodeAt(0);
   }
 
-  if (keyValue >= 65 && keyValue <= 91) {
+  if (keyValue >= 97 && keyValue <= 122) {
     manageUserInputChar(String.fromCharCode(keyValue));
   }
 }
